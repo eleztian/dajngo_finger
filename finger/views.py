@@ -5,10 +5,11 @@ import time
 from finger.finger_email import send_email
 from django.template import loader
 from finger.finger_config import *
+from xlwt import *
+from datetime import datetime
+
 def putFinger(request):
     message = ''
-
-
 #    fid = str(request.POST.get('Id')).strip()
     stu_name = str(request.POST.get('name' )).strip()
     stu_id   = str(request.POST.get('id'   )).strip()
@@ -163,6 +164,11 @@ class FingerIndex(ListView):
         Student_list = Student.objects.all()
         return Student_list
 
+    def get_context_data(self, **kwargs):
+        kwargs['year']  = datetime.now().year
+        kwargs['month'] = datetime.now().month
+        return super(FingerIndex, self).get_context_data(**kwargs)
+
 class ShowOneStudentAtendance(ListView):
     template_name = 'finger_show_onestu_atendance.html'
     context_object_name = 'Atendance_ok_list'
@@ -188,6 +194,10 @@ class ShowOneStudentAtendance(ListView):
         kwargs['year'] = self.kwargs['year']
         kwargs['month'] = self.kwargs['month']
         kwargs['student_id'] = self.kwargs['student_id']
+        try:
+            kwargs['student_name']    = Student.objects.get(Sid = self.kwargs['student_id']).Sname
+        except:
+            kwargs['student_name'] = "No student"
         return super(ShowOneStudentAtendance, self).get_context_data(**kwargs)
 
 class ShowAllAtendance(ListView):
@@ -224,9 +234,6 @@ class atendance_sort(ListView):
             kwargs['stu_'+str(index)] = stu.Sname
         return super(atendance_sort, self).get_context_data(**kwargs)
 
-from xlwt import *
-from datetime import datetime
-
 #下载
 def download(request):
     year = request.GET.get('y')
@@ -243,13 +250,14 @@ def download(request):
         for i in range(0, len(row0)):
             sheet.write(0, i, row0[i])
         #数据
-        students = Atendance.objects.all()
+        students = Student.objects.all()
         row = 0
-        for stu in students:
-            row += 1
-            sheet.write(row, 0, stu.Sname)
-            sheet.write(row, 1, stu.Sid)
-            sheet.write(row, 2, stu.StotalTime)
+        if students.count() != 0:
+            for stu in students:
+                row += 1
+                sheet.write(row, 0, stu.Sname)
+                sheet.write(row, 1, stu.Sid)
+                sheet.write(row, 2, stu.StotalTime)
 
     else:   #下载详细表
         row0 = ['姓名', '学号', '日期', '开始时间', '结束时间', '有效时间']
