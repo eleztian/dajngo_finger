@@ -224,4 +224,27 @@ class atendance_sort(ListView):
             kwargs['stu_'+str(index)] = stu.Sname
         return super(atendance_sort, self).get_context_data(**kwargs)
 
+from xlwt import *
+from datetime import datetime
+#下载
+def download(request):
+    now = datetime.now().strftime("%y-%m-%d")
+    filename = "rus_"+ now + '.xls'
+    response = HttpResponse(content_type = 'application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+    workbook = Workbook(encoding = 'utf-8')  # 创建工作簿
+    sheet = workbook.add_sheet("sheet1")  # 创建工作页
+    row0 = ['姓名', '学号', '总时间'] #表头
+    for i in range(0, len(row0)):
+        sheet.write(0, i, row0[i])
+    #数据
+    students = Student.objects.all()
+    row = 0
+    for stu in students:
+        row += 1
+        sheet.write(row, 0, stu.Sname)
+        sheet.write(row, 1, stu.Sid)
+        sheet.write(row, 2, stu.StotalTime)
+    workbook.save(response)
+    return response
 
