@@ -7,6 +7,8 @@ from django.template import loader
 from finger.finger_config import *
 def putFinger(request):
     message = ''
+
+
 #    fid = str(request.POST.get('Id')).strip()
     stu_name = str(request.POST.get('name' )).strip()
     stu_id   = str(request.POST.get('id'   )).strip()
