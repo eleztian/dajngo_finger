@@ -53,6 +53,7 @@ class Command(BaseCommand):
         w.add_sheet("...")      #防止w为空
         w.save(self.tableNme)
 
+
     def send_email_to_everyOne(self):
         subject, from_email, to= "B302本周考勤", "544347795@qq.com", ['544347795@qq.com']
         students = Student.objects.all()
