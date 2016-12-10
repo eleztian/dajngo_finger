@@ -226,25 +226,61 @@ class atendance_sort(ListView):
 
 from xlwt import *
 from datetime import datetime
+
 #下载
 def download(request):
-    now = datetime.now().strftime("%y-%m-%d")
-    filename = "rus_"+ now + '.xls'
+    year = request.GET.get('y')
+    month = request.GET.get('m')
     response = HttpResponse(content_type = 'application/vnd.ms-excel')
-    response['Content-Disposition'] = 'attachment; filename=%s' % filename
     workbook = Workbook(encoding = 'utf-8')  # 创建工作簿
     sheet = workbook.add_sheet("sheet1")  # 创建工作页
-    row0 = ['姓名', '学号', '总时间'] #表头
-    for i in range(0, len(row0)):
-        sheet.write(0, i, row0[i])
-    #数据
-    students = Student.objects.all()
-    row = 0
-    for stu in students:
-        row += 1
-        sheet.write(row, 0, stu.Sname)
-        sheet.write(row, 1, stu.Sid)
-        sheet.write(row, 2, stu.StotalTime)
+
+    filename = ""
+    if year == None:      #下载总表
+        now = datetime.now().strftime("%y-%m-%d")
+        filename = "rus_" + now + '.xls'
+        row0 = ['姓名', '学号', '总时间'] #表头
+        for i in range(0, len(row0)):
+            sheet.write(0, i, row0[i])
+        #数据
+        students = Atendance.objects.all()
+        row = 0
+        for stu in students:
+            row += 1
+            sheet.write(row, 0, stu.Sname)
+            sheet.write(row, 1, stu.Sid)
+            sheet.write(row, 2, stu.StotalTime)
+
+    else:   #下载详细表
+        row0 = ['姓名', '学号', '日期', '开始时间', '结束时间', '有效时间']
+        for i in range(0, len(row0)):
+            sheet.write(0, i, row0[i])
+        #数据
+        #总的详细考勤表
+        atens = Atendance.objects.filter(Adate__year = year, \
+                                         Adate__month = month)
+        stu_id = request.GET.get("id")
+        if stu_id != None:      #每个人的表
+            atens = atens.filter(Astudent__Sid = stu_id)
+        row = 0
+        try:
+            for aten in atens:
+                row += 1
+                sheet.write(row, 0, aten.Astudent.Sname)
+                sheet.write(row, 1, aten.Astudent.Sid)
+                sheet.write(row, 2, aten.Adate.strftime("%Y-%m-%d"))
+                sheet.write(row, 3, aten.Astart.strftime("%H:%m"))
+                sheet.write(row, 4, aten.Aend.strftime("%H:%m"))
+                if aten.Ais == 'Y':
+                    time = (int(aten.Aend.hour) - int(aten.Astart.hour)) * 60 \
+                           + int(aten.Aend.minute) - int(aten.Astart.minute)
+                else:
+                    time = 0
+                sheet.write(row, 5, str(time))
+                filename += "rus_%s_%s_%s.xls" % (stu_id, year, month)
+        except:
+            filename = "服务器出错"
     workbook.save(response)
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename
     return response
 
