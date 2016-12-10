@@ -1,7 +1,7 @@
 from django.db import models
 import datetime
 class FingerPrint(models.Model):
-    Fid    = models.IntegerField('编号',primary_key=True)
+    Fid    = models.AutoField('编号',primary_key=True)
     Ftemp1 = models.CharField('模板1', max_length = 534, null = True)
     Ftemp2 = models.CharField('模板2', max_length = 534,null = True)
     Fdel   = models.BooleanField('删除',default=False)

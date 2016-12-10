@@ -15,32 +15,35 @@ def putFinger(request):
     stu_email= str(request.POST.get('email')).strip()
     f1       = str(request.POST.get('F1'   )).strip()
     f2       = str(request.POST.get('F2'   )).strip()
-
-    s = FingerPrint.objects.raw('SELECT MAX(Fid) AS id FROM finger_fingerprint')
+    psw      = str(request.POST.get('psw'  )).strip()
+    s = FingerPrint.objects.raw('SELECT Fid,MAX(Fid) AS id FROM finger_fingerprint')
     fid = 0
     for i in s:
         fid = str(i.id + 1)
     message += fid.zfill(3)
-    if stu_id != '' and stu_name != '':
-        re = Student.objects.filter(Sid = stu_id)
-        if re.count() == 0:
-            stu = Student(Sname = stu_name, Sid = stu_id, Semail = stu_email)
-            try:
-                stu.save()
-                if True:
-                    fingerPrint = FingerPrint(Fid = int(fid), Ftemp1 = f1, Ftemp2 = f2)
-                    fingerPrint.save()
-                    Student.objects.filter(Sid = stu_id).update(Sfinger = fingerPrint)
-                    message += 'OK fingerid %s' % fid
-                else:
-                    message += 'ERROR finger temp error'
-                    Student.objects.filter(Sid = stu_id).delete()
-            except Exception as e:
-                message += 'ERROR'+ e
+    if psw == put_psw:
+        if stu_id != '' and stu_name != '':
+            re = Student.objects.filter(Sid = stu_id)
+            if re.count() == 0:
+                stu = Student(Sname = stu_name, Sid = stu_id, Semail = stu_email)
+                try:
+                    stu.save()
+                    if True:
+                        fingerPrint = FingerPrint(Fid = int(fid), Ftemp1 = f1, Ftemp2 = f2)
+                        fingerPrint.save()
+                        Student.objects.filter(Sid = stu_id).update(Sfinger = fingerPrint)
+                        message += 'OK fingerid %s' % fid
+                    else:
+                        message += 'ERROR finger temp error'
+                        Student.objects.filter(Sid = stu_id).delete()
+                except Exception as e:
+                    message += 'ERROR'+ e
+            else:
+                message += 'ERROR this id is exited'
         else:
-            message += 'ERROR this id is exited'
+            message += 'ERROR name or id can\'t be Null'
     else:
-        message += 'ERROR name or id can\'t be Null'
+        message += 'ERROR psw is wrong'
     return HttpResponse(message)
 
 def get_client_ip(request):
