@@ -1,0 +1,24 @@
+<nav class="navbar navbar-default navbar-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">嵌入式创新实验室</a>
+        </div>
+        <div>
+            <ul class="nav navbar-nav ">
+                <li ><a href="/finger/">信息</a></li>
+                <li ><a href="/finger/atendance/">考勤</a></li>
+                <li ><a href="/finger/atendance/sort/">排名</a></li>
+                <li ><a href="/admin/">Admin</a></li>
+                <li >
+                 <form class="navbar-form navbar-right" role="search" method="post" action="
+                 /finger/atendance/{{ year }}/{{ month }}/search/">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="输入学号" name="student_id">
+                    </div>
+                    <button type="submit" class="btn btn-default ">Search</button>
+                </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

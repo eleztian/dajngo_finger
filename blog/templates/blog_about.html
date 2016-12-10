@@ -1,0 +1,39 @@
+{% extends 'blog_base.html' %}
+{% block content %}
+  <div class="content-body">
+			<div class="container">
+				<div class="row">
+					<main class="col-md-12">
+						<h1 class="page-title">About Me</h1>
+						<article class="post">
+							<div class="entry-content clearfix">
+								<figure class="img-responsive-center">
+									<img class="img-responsive" src="{{ STATIC_URL }}img/me2.jpg" alt="Developer Image">
+                {% for about in object_list %}
+                <div  style="position:absolute; z-index:2; left:550px; top:150px">
+                     <p><span>Name  &nbsp;&nbsp; &nbsp; &nbsp;{{about.name}}</span></p>
+                     <p><span>Sex   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;     {{about.sex}}</span></p>
+                     <p><span>Birth &nbsp; &nbsp; &nbsp; &nbsp;     {{about.age}}</span></p>
+                     <p><span>Identity &nbsp; &nbsp;  {{about.identity}}</span></p>
+                    <p><span>E-mail &nbsp; &nbsp; &nbsp; {{about.email}}</span></p>
+                  <h2>&nbsp;</h2> 
+                  {{about.say|safe}}
+               </div>
+                   </figure>
+               {% endfor %}
+								<div class="height-40px"></div>
+								<h2 class="title text-center">-------------</h2>
+								<ul class="social">
+									<li class="facebook"><a href="#"><span >H</span></a></li>
+									<li class="twitter"><a href="#"><span ></span>E</a></li>
+									<li class="google-plus"><a href="#"><span >L</span></a></li> 
+                  <li class="google-plus"><a href="#"><span >L</span></a></li>
+									<li class="tumblr"><a href="#"><span >O</span></a></li>
+								</ul>
+							</div>
+						</article>
+					</main>
+				</div>
+			</div>
+		</div>
+{% endblock %}

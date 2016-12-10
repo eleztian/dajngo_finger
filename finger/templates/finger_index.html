@@ -1,0 +1,30 @@
+
+{% extends 'finger_base.html' %}
+{% load mytime %}
+{% block content %}
+
+ <div class="container">
+	<table class="table table-hover ">
+    <caption>good good study , day day up...</caption>
+		<thead>
+			<tr>
+				<th>学号</th>
+				<th>姓名</th>
+                <th>总时间&nbsp(h)</th>
+                <th>指纹</th>
+			</tr>
+		</thead>
+		<tbody>
+         {% for student in Student_list %}
+             <tr {% if student.StotalTime|Time_is_ok %}class="danger"{% endif %}>
+                <td><a href="./atendance/{{ student.Sid }}" style="text-decoration : none; color: black">{{ student.Sid }}</a></td>
+                <td>{{ student.Sname }}</td>
+                <td>{{ student.StotalTime|h_m}}</td>
+                <td >{{ student.Sfinger.Fid }}</td>
+             </tr>
+         {% endfor %}
+
+		</tbody>
+	</table>
+</div>
+{% endblock %}

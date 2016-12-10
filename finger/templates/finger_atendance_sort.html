@@ -1,0 +1,16 @@
+
+{% extends 'finger_base.html' %}
+
+
+{% block content %}
+    <div id = "img" style="text-align: center">
+        <img src="{{ STATIC_URL }}img/a.png " style="width: 50%; height: 600px; text-align: center; vertical-align: middle;">
+        <div id="container"style="">
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css" media="screen" type="text/css" />
+        <p><a href="#" style="position:absolute; z-index:2; left:310px; top:200px">{{ stu_2 }}</a></p>
+        <p><a href="#" style="position:absolute; z-index:2; left:580px; top:100px">{{ stu_1 }}</a></p>
+        <p><a href="#" style="position:absolute; z-index:2; left:840px; top:200px">{{ stu_0 }}</a></p>
+    </div>
+
+    </div>
+{% endblock %}

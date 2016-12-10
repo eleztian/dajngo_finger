@@ -1,0 +1,43 @@
+{% extends "finger_base.html" %}
+{% load myfilters %}
+
+{% block content %}
+<div class="container">
+  {% if form.errors %}
+  <p><font color="red">Your username and password didn't match. Please try again.</font></p>
+  {% endif %}
+
+  {% if next %}
+  {% if user.is_authenticated %}
+  <p><font color="red">Your account doesn't have access to this page. To proceed,
+  please login with an account that has access.</font></p>
+  {% else %}
+  <p><font color="red">Please login to see this page.</font></p>
+  {% endif %}
+  {% endif %}
+
+  <div class="login center-block">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><strong>登录</strong></h3>
+      </div>
+      <div class="panel-body">
+        <form method="post" action="{% url 'login' %}">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="">{{ form.username.label_tag }}</label>
+            {{ form.username|add_class:"form-control" }}
+          </div>
+          <div class="form-group">
+            <label for="">{{ form.password.label_tag }}</label>
+            <a href="{% url 'password_reset' %}" tabindex="-1">（忘了密码？）</a>
+            {{ form.password|add_class:"form-control" }}
+          </div>
+          <button type="submit" class="btn btn-default pull-left">登 录</button>
+          <input type="hidden" name="next" value="{{ next }}" />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

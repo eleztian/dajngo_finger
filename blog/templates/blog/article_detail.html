@@ -1,0 +1,47 @@
+{% extends '../blog_base.html' %}
+{% block content %}
+    <div class="content-body">
+			<div class="container">
+				<div class="row">
+						<article class="post post-1">
+							<header class="entry-header">
+								<h1 class="entry-title">{{ article.title }}</h1>
+								<div class="entry-meta">
+									<span class="post-category"><a href="#">{{ article.cateory }}</a></span>
+			
+									<span class="post-date"><a href="#"><time class="entry-date" datetime="2012-11-09T23:15:57+00:00">{{ article.create_time }}</time></a></span>
+			
+									<span class="post-author"><a href="#">Elezt</a></span>
+			
+									<span class="comments-link"><a href="#"> {{ article.views }} views</a></span>
+								</div>
+							</header>
+							<div class="entry-content clearfix">
+						    {{ article.body|safe }}
+            	</div>
+            <hr>
+            <h3><span>Comments</span></h3>
+            <hr>
+            <div>
+              <ul>
+                {% for comment in comment_list %}
+                 <li>
+                   <h4>{{ comment.name }}&nbsp;&nbsp;{{ comment.create_time}}</h4>
+                   <p>{{ comment.message}}</p>
+                 </li>
+                 {% endfor %}
+              </ul>
+              <hr>
+								<form action="comment/" method="post" class="contact-form">
+										<div class="col-md-6 col-md-offset-0">
+											<input type="text" name="name" placeholder="Name" >
+											<input type="email" name="email" placeholder="Email" >
+											<textarea name="message" rows="7" placeholder="Your Comment"></textarea>
+											<button class="btn-send btn-5 btn-5b ion-ios-paperplane" name = "submit"><span>Submit Comment</span></button>
+									  </div>	<!-- row -->
+								</form>
+              </div>
+             </article>
+            </div>
+           </div>
+{% endblock %}

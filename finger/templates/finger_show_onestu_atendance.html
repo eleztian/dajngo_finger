@@ -1,0 +1,74 @@
+
+{% extends 'finger_base.html' %}
+{% load chartkick %}
+{% load mytime %}
+{% block content %}
+    <ol class="breadcrumb" xmlns="http://www.w3.org/1999/html">
+        <li><a href="/finger/">Home</a></li>
+        <li><a href="/finger/atendance/{{ year }}/1/">{{ year }}</a></li>
+        <li class="dropdown active">{{ month }}&nbsp;<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <b class="caret"></b></a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="/finger/atendance/{{ year }}/1/{{ student_id }}/"> 1</a></li>
+                    <li><a href="/finger/atendance/{{ year }}/2/{{ student_id }}/"> 2</a></li>
+                    <li><a href="/finger/atendance/{{ year }}/3/{{ student_id }}/"> 3</a></li>
+                    <li><a href="/finger/atendance/{{ year }}/4/{{ student_id }}/"> 4</a></li>
+                    <li><a href="/finger/atendance/{{ year }}/5/{{ student_id }}/"> 5</a></li>
+                    <li><a href="/finger/atendance/{{ year }}/6/{{ student_id }}/"> 6</a></li>
+                    <li><a href="/finger/atendance/{{ year }}/7/{{ student_id }}/"> 7</a></li>
+                    <li><a href="/finger/atendance/{{ year }}/8/{{ student_id }}/"> 8</a></li>
+                    <li><a href="/finger/atendance/{{ year }}/9/{{ student_id }}/"> 9</a></li>
+                    <li><a href="/finger/atendance/{{ year }}/10/{{ student_id }}/">10</a></li>
+                    <li><a href="/finger/atendance/{{ year }}/11/{{ student_id }}/">11</a></li>
+                    <li><a href="/finger/atendance/{{ year }}/12/{{ student_id }}/">12</a></li>
+                </ul>
+        </li>
+
+    </ol>
+    <div class="panel panel-default">
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<a data-toggle="collapse" data-parent="#accordion"
+				   href="#imgTable">
+					点击切换到数据统计
+				</a>
+			</h4>
+		</div>
+		<div id="imgTable" class="panel-collapse collapse">
+			<div class="panel-collapse">
+				<table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>姓名</th>
+                            <th>日期</th>
+                            <th>起始时间</th>
+                            <th>结束时间</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                     {% for atendance_ok in Atendance_ok_list %}
+                         <tr{% if atendance_ok.Ais|Ais %} class="danger"{% endif %}>
+                             <td>{{ atendance_ok.Astudent }}</td>
+                             <td>{{ atendance_ok.Adate }}</td>
+                             <td>{{ atendance_ok.Astart }}</td>
+                             <td>{{ atendance_ok.Aend }}</td>
+                         </tr>
+                     {% endfor %}
+                     {% for atendance_not in Atendance_not_list %}
+                         <tr class="danger">
+                             <td>{{ atendance_not.Astudent }}</td>
+                             <td>{{ atendance_not.Adate }}</td>
+                             <td>{{ atendance_not.Astart }}</td>
+                             <td>-</td>
+                         </tr>
+                     {% endfor %}
+                    </tbody>
+                </table>
+			</div>
+		</div>
+	</div>
+    <div>
+        {% column_chart everydayTime with height="200px " %}
+        {% line_chart everydayTime %}
+    </div>
+{% endblock %}

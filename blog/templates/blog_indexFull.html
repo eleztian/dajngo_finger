@@ -1,0 +1,31 @@
+<!-- full width-->
+ {% extends 'blog_base.html' %}
+ {% block content %}
+      <div class="content-body">
+       <div class="container">
+         <div class="row">
+         {% for article in article_list%}
+            <article class="post post-1">
+            <header class="entry-header">
+               <h1 class="entry-title">
+                 <a href="{% url 'blog:detail' article.pk %}">{{ article.title }}</a>
+               </h1>
+                 <div class="entry-meta">
+                   <span class="post-category"><a href="#">{{article.cateory}}</a></span>
+ 
+                   <span class="post-date"><a href="#"><time class="entry-date" datetime="2012-11-09T23:15:57+00:00">{{ article.create_time }}</time></a></span>
+ 
+                   <span class="post-author"><a href="#">Elezt</a></span>
+ 
+                   <span class="comments-link"><a href="#">4 Comments</a></span>
+                </div>
+            </header>
+              <div class="entry-content clearfix">
+                <p>{{ article.abstract }}</p>
+                <div class="read-more cl-effect-14">
+                  <a href=" {% url 'blog:detail' article.pk %}" class="more-link">Continue reading <span class="meta-nav">→</span></a>
+                </div>
+              </div>
+            </article>
+        {% endfor %}
+ {% endblock %}
