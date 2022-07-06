@@ -7,7 +7,7 @@ colorama==0.2.5
 command-not-found==0.3
 django-contrib-comments==1.7.2
 django-markdown==0.8.4
-html5lib==0.999
+html5lib==0.999999999
 language-selector==0.1
 markdown2==2.3.1
 pycurl==7.19.3
